@@ -1601,6 +1601,18 @@ class ZLEmbedAlbumListNavView: UIView {
         return btn
     }()
     
+    private lazy var wifiBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.setTitle("WiFi传输", for: .normal)
+        btn.setTitleColor(UIColor.init(red: 255/255.0, green: 119/255.0, blue: 68/255.0, alpha: 1.0), for: .normal)
+        btn.backgroundColor = UIColor.init(red: 255/255.0, green: 236/255.0, blue: 222/255.0, alpha: 1.0);
+        btn.layer.masksToBounds = true;
+        btn.layer.cornerRadius = 14.5;
+        btn.addTarget(self, action: #selector(wifiButtonTaped), for: .touchUpInside)
+        return btn
+    }()
+            
     var title: String {
         didSet {
             albumTitleLabel.text = title
@@ -1638,6 +1650,9 @@ class ZLEmbedAlbumListNavView: UIView {
         } else {
             cancelBtn.frame = CGRect(x: insets.left + 10, y: insets.top, width: 44, height: 44)
         }
+        
+        wifiBtn.frame = CGRect(x: UIScreen.main.bounds.size.width - 72 - 8, y: insets.top + 8, width: 72, height: 29);
+        
     }
     
     private func refreshTitleViewFrame() {
@@ -1686,6 +1701,14 @@ class ZLEmbedAlbumListNavView: UIView {
         titleBgControl.addSubview(albumTitleLabel)
         titleBgControl.addSubview(arrow)
         addSubview(cancelBtn)
+        addSubview(wifiBtn)
+        NotificationCenter.default.addObserver(self, selector: #selector(cancelBtnClick), name: NSNotification.Name("closePage_202211111422"), object: nil);
+    }
+    
+    @objc private func wifiButtonTaped() {
+        
+        NotificationCenter.default.post(name: Notification.Name("showWifi_202211101712"), object: nil)
+        
     }
     
     @objc private func titleBgControlClick() {
